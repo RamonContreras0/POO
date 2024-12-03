@@ -10,7 +10,7 @@ class Gato:
         return self.__nombre
 
     def __str__(self):
-        return (f"Nombre: {self.__nombre}, Edad: {self.__edad}, Colo: {self.__color}"
+        return (f"Nombre: {self.__nombre}, Edad: {self.__edad}, Color: {self.__color}"
                 f"Energía: {self.__energia}, Hambre: {self.__hambre}")
 
     def jugar(self):
