@@ -6,26 +6,59 @@ final de su compra después de aplicar el descuento adecuado y registrar
 las compras realizadas en la cafetería'''
 
 class Cliente:
-    def __init__(self, ocupacion, compra):
-        self.ocupacion = ocupacion
-        self.compra = compra
+    __descuentos = {
+        "estudiante": 0.20,
+        "academico": 0.10,
+        "otro": 0.0
+    }
 
-    def ocupacion(self, ocupacion):
-        if ocupacion == 1:
-            print("Se selecciono la opcion Estudiante tiene un "20%" de descuento")
-        elif: ocupacion = 2:
-            print("Se selecciono la opcion Academico tiene un "10%" de descuento ")
-        else:
-            print("Se selecciono la opcion Otro")
-        
-    def __compra(self, compra, ocupacion):
-        if ocupacion = 1:
-            compra= compra * 0.8
-            print(f"El precio de su compra es de " {compra})
-        elif: ocupacion = 2:
-            compra = compra * 0.9
-            print(f"El precio de su compra es de " {compra})
-        else:  print(f"El precio de su compra es de " {compra})
+    def __init__(self, tipo_cliente, compra):
+        if tipo_cliente not in Cliente.__descuentos:
+            raise ValueError("Tipo de cliente no válido. Debe ser 'estudiante', 'academico' u 'otro'.")
+        self.__tipo_cliente = tipo_cliente 
+        self.__compra = max(0, compra) 
+
+    @property
+    def tipo_cliente(self):
+        return self.__tipo_cliente
+
+    @property
+    def compra(self):
+        return self.__compra
+
+    @compra.setter
+    def compra(self, nuevo_precio):
+        if nuevo_precio < 0:
+            raise ValueError("El precio de la compra no puede ser negativo.")
+        self.__compra = nuevo_precio
+
+    @staticmethod
+    def calcular_precio_final(precio, descuento):
+        return precio * (1 - descuento)
+
+    def obtener_precio_final(self):
+        descuento = Cliente.__descuentos[self.__tipo_cliente]
+        return Cliente.calcular_precio_final(self.__compra, descuento)
+
+    def registrar_compra(self):
+        precio_final = self.obtener_precio_final()
+        print(f"Cliente tipo: {self.__tipo_cliente.capitalize()}\nCompra original: ${self.__compra:.2f}\nDescuento aplicado: {Cliente.__descuentos[self.__tipo_cliente] * 100}%\nPrecio final: ${precio_final:.2f}")
+
+if __name__ == "__main__":
+    try:
+        cliente1 = Cliente("estudiante", 100)
+        cliente1.registrar_compra()
+
+        cliente2 = Cliente("academico", 150)
+        cliente2.registrar_compra()
+
+        cliente3 = Cliente("otro", 200)
+        cliente3.registrar_compra()
+
+        cliente1.compra = 120
+        cliente1.registrar_compra()
+    except ValueError as e:
+        print(e)
 
 #Encapsulación y Atributos Privados
           
