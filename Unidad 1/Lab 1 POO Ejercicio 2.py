@@ -17,29 +17,95 @@ pantalla.
 una colisión. Se sugiere usar la distancia entre los centros de ambas figuras para
 esta detección.'''
 
+
 import pygame
-pygame.init
+import random
+import math
+pygame.init()
 
+ANCHO = 800
+ALTO = 600
+pantalla = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Laboratorio N°2 - Ejercicio 2")
+
+ROJO = (255, 0, 0)
+NEGRO = (0, 0, 0)
 AZUL = (0, 139, 255)
-
-class Triangulo:
-    def __init__(self, x, y , velocidad, altura, base):
+FPS = 60
+reloj = pygame.time.Clock()
+class Puntos:
+    def __init__(self, x, y, velocidad):
         self.x = x
         self.y = y
         self.velocidad = velocidad
-        self.altura= altura
-        self.base= base
+        self.radio = 8 
+
+    def mover(self):
+        self.y += self.velocidad
+        if self.y > ALTO: 
+            self.reiniciar()
+
+    def reiniciar(self):
+        self.x = random.randint(0, ANCHO - self.radio)
+        self.y = random.randint(-100, -40)
 
     def dibujar(self):
-        pygame.draw.lines(AZUL, (self.x, self.y))
-    
-    def movimiento(self, derecha, izquierda):
-        self.derecha = derecha
-        self.derecha += self.velocidad
-        self.izquierda = izquierda
-        self.izquierda += self.velocidad
-        derecha = pygame.K_RIGHT
-        izquierda = pygame.K_LEFT
+        pygame.draw.circle(pantalla, ROJO, (self.x, self.y), self.radio)
 
-triangulo=[Triangulo(50 , 30, 6, 20, 30)]
+class Triangulo:
+    def __init__(self, x, y, velocidad, base, altura):
+        self.x = x
+        self.y = y
+        self.velocidad = velocidad
+        self.base = base
+        self.altura = altura
 
+    def dibujar(self):
+        puntos = [
+            (self.x, self.y),
+            (self.x - self.base // 2, self.y + self.altura), 
+            (self.x + self.base // 2, self.y + self.altura), 
+        ]
+        pygame.draw.polygon(pantalla, AZUL, puntos)
+
+    def mover(self, teclas):
+        if teclas[pygame.K_LEFT] and self.x - self.base // 2 > 0:
+            self.x -= self.velocidad
+        if teclas[pygame.K_RIGHT] and self.x + self.base // 2 < ANCHO:
+            self.x += self.velocidad
+
+    def colision(self, punto):
+        centro_x = self.x
+        centro_y = self.y + self.altura // 2
+        distancia = math.sqrt((centro_x - punto.x) ** 2 + (centro_y - punto.y) ** 2)
+        return distancia < punto.radio + self.altura // 2
+
+def main():
+    puntos_rojos = [Puntos(random.randint(0, ANCHO - 10), random.randint(-100, -40), random.randint(2, 6)) for _ in range(5)]
+    nave = Triangulo(ANCHO // 2, ALTO - 60, 8, 40, 30)
+
+    corriendo = True
+    while corriendo:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                corriendo = False
+
+        teclas = pygame.key.get_pressed()
+        nave.mover(teclas)
+        pantalla.fill(NEGRO)
+
+        for punto in puntos_rojos:
+            punto.mover()
+            punto.dibujar()
+            if nave.colision(punto):
+                corriendo = False
+
+        nave.dibujar()
+
+        pygame.display.flip()
+        reloj.tick(FPS)
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()

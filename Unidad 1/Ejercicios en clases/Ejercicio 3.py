@@ -1,3 +1,13 @@
+#Ejercicio 3
+'''Implementar una clase Fraccion que represente una fracción matemática con numerador y denominador. 
+Además se debe crear varios métodos mágicos que permitan operar, comparar, y mostrar
+las fracciones de manera intuitiva. La clase debe poseer los siguientes métodos mágicos:
+Método mágico que devuelva la fracción como una representación de cadena
+Método mágico que permita sumar dos fracciones
+Método mágico que permita el producto entre dos fracciones
+Método mágico que permita comparar dos fracciones. Dos fracciones se consideran iguales si sus
+valores numéricos son equivalentes'''
+
 from math import gcd
 
 class Fraccion:
@@ -40,15 +50,15 @@ f1 = Fraccion(1, 2)
 f2 = Fraccion(2, 4)
 f3 = Fraccion(3, 4)
 
-print(f"Fracción 1: {f1}")  # Salida: 1/2
-print(f"Fracción 2: {f2}")  # Salida: 1/2
-print(f"Fracción 3: {f3}")  # Salida: 3/4
+print(f"Fracción 1: {f1}") 
+print(f"Fracción 2: {f2}") 
+print(f"Fracción 3: {f3}")
 
 suma = f1 + f3
-print(f"Suma: {suma}")  # Salida: 5/4
+print(f"Suma: {suma}")
 
 producto = f1 * f3
-print(f"Producto: {producto}")  # Salida: 3/8
+print(f"Producto: {producto}")
 
-print(f"¿f1 es igual a f2? {f1 == f2}")  # Salida: True
-print(f"¿f1 es igual a f3? {f1 == f3}")  # Salida: False
+print(f"¿f1 es igual a f2? {f1 == f2}")
+print(f"¿f1 es igual a f3? {f1 == f3}")

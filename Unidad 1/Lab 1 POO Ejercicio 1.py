@@ -4,7 +4,6 @@ Cada personaje tendrá un nombre, nivel de vida y puntos de ataque. La
 idea es que los personajes puedan interactuar entre ellos, permitiendo
 que un personaje ataque a otro, lo que disminuirá su vida. Además,
 deberás verificar si un personaje está vivo o no.'''
-
 '''Requerimientos:
 1. Clase Personaje:
 ○ Atributos: el nombre del personaje, el nivel de vida del personaje y los
@@ -31,31 +30,36 @@ class Personaje:
         self.vida = vida
         self.ataque = ataque
 
-class Personaje2:
-    def __init__(self, nombre2, vida2, ataque2):
-        self.nombre = nombre2
-        self.vida = vida2
-        self.ataque = ataque2
+    def atacar(self, personaje2):
+        if personaje2.vida > 0:
+            personaje2.vida -= self.ataque
+            if personaje2.vida < 0:
+                personaje2.vida = 0 
 
-def daño(self, vidarestante):
-    self.vidarestante = self.vida - self.ataque2
-    vida = True
-    while vida:
-        if vidarestante > 0 :
-            print(f"{self.nombre} resivio un ataque de {self.ataque2} de daño, le queda {self.vidarestante} de vida")
-        else : vida = False
-        print(f"{self.nombre} resivio un ataque de {self.ataque2} de daño, no le queda vida para continuar")
+    def esta_vivo(self):
+        return self.vida > 0
 
-    self.vidarestante = self.vida2 - self.ataque
-    vida2 = True
-    while vida:
-        if vidarestante > 0 :
-            print(f"{self.nombre2} resivio un ataque de {self.ataque} de daño, le queda {self.vidarestante} de vida")
-        else : vida = False
-        print(f"{self.nombre2} resivio un ataque de {self.ataque} de daño, no le queda vida para continuar")
-    
+    def __str__(self):
+        return f"Nombre: {self.nombre}, Vida: {self.vida}, Ataque: {self.ataque}"
 
-personaje1=[Personaje ("Pedro", 50, 3)]
-personaje2=[Personaje2 ("Luis", 45, 4)]
+personaje1 = Personaje("Pedro", 50, 10)
+personaje2 = Personaje("Luis", 45, 8)
 
+while personaje1.esta_vivo() and personaje2.esta_vivo():
+    print(f"\n{personaje1.nombre} ataca a {personaje2.nombre}")
+    personaje1.atacar(personaje2)
+    print(personaje1)
+    print(personaje2)
 
+    if not personaje2.esta_vivo():
+        print(f"\n{personaje2.nombre} no puede continuar.")
+        break
+
+    print(f"\n{personaje2.nombre} ataca a {personaje1.nombre}")
+    personaje2.atacar(personaje1)
+    print(personaje1)
+    print(personaje2)
+
+    if not personaje1.esta_vivo():
+        print(f"\n{personaje1.nombre} no puede continuar.")
+        break
